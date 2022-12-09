@@ -3,9 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const yearEl = document.getElementById('year')
   const monthEl = document.getElementById('month')
   const dateEl = document.getElementById('date')
-  //const titleEl = document.getElementById('title')
-  //const authorEl = document.getElementById('author')
-  //const descriptionEl = document.getElementById('description')
+  const booksContainer = document.getElementById('books-container')
 
   formEl.addEventListener('submit', function(e) {
     e.preventDefault()
@@ -22,17 +20,18 @@ document.addEventListener("DOMContentLoaded", function() {
     async function getBooks() {
       let response = await fetch(url)
       let responseData = await response.json()
-      let booksContainer = document.getElementById('books-container')
       for(let i = 0; i < 5; i++) {
-        booksContainer.append(
-          document.createElement('h1').textContent = responseData.results.books[i].title,
-          document.createElement('br'),
-          document.createElement('h3').textContent = responseData.results.books[i].author,
-          document.createElement('br'),
-          document.createElement('p').textContent = responseData.results.books[i].description,
-          document.createElement('br'),
-          document.createElement('br')
-        )
+        let singleBookContainer = document.createElement('div')
+        let titleEl = document.createElement('h1')
+        titleEl.textContent = responseData.results.books[i].title
+        let authorEl = document.createElement('h3')
+        authorEl.textContent = responseData.results.books[i].author
+        let imageEl = document.createElement('img')
+        imageEl.src = responseData.results.books[i].book_image
+        let descriptionEl = document.createElement('p')
+        descriptionEl.textContent = responseData.results.books[i].description
+        singleBookContainer.append(titleEl, authorEl, imageEl, descriptionEl)
+        booksContainer.append(singleBookContainer)
       }
     }
     getBooks()
